@@ -67,7 +67,7 @@ public class UploadServlet extends HttpServlet {
 		System.out.println(getServletContext().getRealPath("/images"));
 		String path = getServletContext().getRealPath("/images/" + imageName); // 图片的绝对路径(保存在apache服务器的某个文件夹目录下) / absolute path for photo which would be stored under apache server
 
-		if (!Base64Utils.GenerateImage(userhead, path)) { // 判断图片是否保存成功 / see if it has been scuessfully stored
+		if (!Base64Utils.GenerateImage(userhead, path)) { // 判断图片是否保存成功 / see if it has been successfully stored
 			bean.setCode(-2);
 			bean.setData(data);
 			bean.setMsg("图片出错！！");
@@ -90,7 +90,7 @@ public class UploadServlet extends HttpServlet {
 		Gson gson = new Gson();
 		String json = gson.toJson(bean);
 		try {
-			response.getWriter().println(json);// 将json数据传给客户端 / send json back to pi
+			response.getWriter().println(json);// 将json数据传给客户端 / send json back to RaspberryPi
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
