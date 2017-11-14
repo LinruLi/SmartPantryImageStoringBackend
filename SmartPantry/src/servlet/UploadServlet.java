@@ -52,11 +52,10 @@ public class UploadServlet extends HttpServlet {
 		String row = request.getParameter("row");
 		String image_code = request.getParameter("image_code");
 
-		// 判空 / see if it contains null data
-//		if (col == null || col.equals("") || row == null || row.equals("") || image_code == null
-//				|| image_code.equals("")) {
-        if (col == null || col.equals("") || row == null || row.equals("")){
-            System.out.println("");
+		// see if it contains null data
+		if (col == null || col.equals("") || row == null || row.equals("") || image_code == null
+				|| image_code.equals("")) {
+            System.out.println(" some parameter had null value.");
 			return;
 		}
 

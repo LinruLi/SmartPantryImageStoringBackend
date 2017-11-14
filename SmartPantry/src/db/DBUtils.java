@@ -10,21 +10,21 @@ import utils.TokenUtils;
 
 public class DBUtils {
 	private Connection conn;
-	private String url = "jdbc:mysql://127.0.0.1:3306/Login"; // 指定连接数据库的URL
-	private String user = "root"; // 指定连接数据库的用户名
-	private String password = "1213"; // 指定连接数据库的密码
+	private String url = "jdbc:mysql://127.0.0.1:3306/Login"; // specify url for database connection
+	private String user = "root"; // specify username
+	private String password = "1213"; // specify password
 
 	private Statement sta;
 	private ResultSet rs;
 
-	// 打开数据库连接
+	// open up database connection
 	public void openConnect() {
 		try {
-			// 加载数据库驱动
+			// load up database driver for connection
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url, user, password);// 创建数据库连接
+			conn = DriverManager.getConnection(url, user, password);// build up connection
 			if (conn != null) {
-				System.out.println("Successfully start up database connection!"); // 连接成功的提示信息
+				System.out.println("Successfully start up database connection!"); // give out feedback once got connected
 			}
 		} catch (Exception e) {
 			System.out.println("ERROR: " + e.getMessage());
@@ -32,10 +32,8 @@ public class DBUtils {
 	}
 
 	public ResultSet getUserInfo() {
-		// 创建 statement对象
 		try {
 			sta = conn.createStatement();
-			// 执行SQL查询语句
 			rs = sta.executeQuery("select * from userinfo");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -44,10 +42,10 @@ public class DBUtils {
 	}
 
 //	public ResultSet getUser() {
-//		// 创建 statement对象
+//
 //		try {
 //			sta = conn.createStatement();
-//			// 执行SQL查询语句
+//
 //			rs = sta.executeQuery("select * from user");
 //		} catch (SQLException e) {
 //			e.printStackTrace();
@@ -55,6 +53,7 @@ public class DBUtils {
 //		return rs;
 //	}
 
+    // insert data to database
 	public boolean insertDataToDB(String col, String row, String imageCode) {
 		String token = TokenUtils.getToken(col, row);
 		System.out.println("path------->" + imageCode);
@@ -71,6 +70,7 @@ public class DBUtils {
 		return false;
 	}
 
+	//update photo in database
 	public boolean updateDataToDB(String col, String row, String imageCode) {
 		System.out.println("try to update photo in which column = " + col + "and row = " + row);
 		String imagePath = "http://10.118.0.84:8080/home/dunediniot/Pictures/pantryImages/" + imageCode;
@@ -85,43 +85,8 @@ public class DBUtils {
 		return false;
 	}
 
-//	// 注册 将用户名和密码插入到数据库(id设置的是自增长的，因此不需要插入)
-//	public boolean insertDataToDB(String username, String password) {
-//		String sql = " insert into user ( user_name , user_pwd ) values ( " + "'" + username + "', " + "'" + password
-//				+ "' )";
-//		try {
-//			sta = conn.createStatement();
-//			// 执行SQL查询语句
-//			return sta.execute(sql);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return false;
-//	}
 
-//	public boolean isExistInDB(String username, String password) {
-//		boolean isFlag = false;
-//		// 创建 statement对象
-//		try {
-//			sta = conn.createStatement();
-//			// 执行SQL查询语句
-//			rs = sta.executeQuery("select * from user");
-//			if (rs != null) {
-//				while (rs.next()) {
-//					if (rs.getString("user_name").equals(username) && rs.getString("user_pwd").equals(password)) {
-//						isFlag = true;
-//						break;
-//					}
-//				}
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			isFlag = false;
-//		}
-//		return isFlag;
-//	}
-
-	// 判断数据库中是否存在某个用户名,注册的时候判断
+	// check if any data that is existed in database
 	public boolean isExistInDB(String col, String row) {
 		boolean isFlag = false;
 		// 创建 statement对象
