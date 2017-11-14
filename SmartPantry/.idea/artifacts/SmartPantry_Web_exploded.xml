@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="SmartPantry:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/SmartPantry_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="SmartPantry/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="SmartPantry" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/../../JavaLibrary/mysql-connector-java-5.1.44-bin.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../JavaLibrary/gson-2.8.2.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -1,10 +1,11 @@
 package bean;
 
+//class for storing col, row and image path info for BaseBean
 public class RegisterBean {
 
 	private String token;
-	private String username;
-	private String password;
+	private String pantryColumn;
+	private String pantryRow;
 	private String head;
 	public String getToken() {
 		return token;
@@ -12,17 +13,17 @@ public class RegisterBean {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	public String getUsername() {
-		return username;
+	public String getPantryColumn() {
+		return pantryColumn;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setPantryColumn(String pantryColumn) {
+		this.pantryColumn = pantryColumn;
 	}
-	public String getPassword() {
-		return password;
+	public String getPantryRow() {
+		return pantryRow;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPantryRow(String pantryRow) {
+		this.pantryRow = pantryRow;
 	}
 	public String getHead() {
 		return head;

@@ -46,57 +46,62 @@ public class UploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setHeader("Content-Type", "text/html;charset=UTF-8");   //设置头部的编码，防止中文乱码
+		response.setHeader("Content-Type", "text/html;charset=UTF-8");
 
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		String userhead = request.getParameter("userhead");
+		String col = request.getParameter("column");
+		String row = request.getParameter("row");
+		String image_code = request.getParameter("image_code");
 
 		// 判空 / see if it contains null data
-		if (username == null || username.equals("") || password == null || password.equals("") || userhead == null
-				|| userhead.equals("")) {
-			System.out.println("用户名或密码为空");
+//		if (col == null || col.equals("") || row == null || row.equals("") || image_code == null
+//				|| image_code.equals("")) {
+        if (col == null || col.equals("") || row == null || row.equals("")){
+            System.out.println("");
 			return;
 		}
 
-		// 请求数据库 / request from database
+		// request from database
 		DBUtils dbUtils = new DBUtils();
 		dbUtils.openConnect();
 		BaseBean bean = new BaseBean();
 		RegisterBean data = new RegisterBean();
-		String imageName = TimeUtils.getNowTime() + ".jpg"; // 以当前时间作为图片名，具有唯一性 / temporally store image with time as its name for a test
-		System.out.println(getServletContext().getRealPath("/images"));
-		String path = getServletContext().getRealPath("/images/" + imageName); // 图片的绝对路径(保存在apache服务器的某个文件夹目录下) / absolute path for photo which would be stored under apache server
 
-		if (!Base64Utils.GenerateImage(userhead, path)) { // 判断图片是否保存成功 / see if it has been successfully stored
+		String imageName = row + "_" + col + "_" + TimeUtils.getNowTime() + ".jpg"; // temporally store image with time as its name for a test
+		System.out.println(getServletContext().getRealPath("/images"));
+		String path = getServletContext().getRealPath("/images/" + imageName); // absolute path for photo which would be stored under apache server
+
+		if (!Base64Utils.GenerateImage(image_code, path)) { // see if it has been scuessfully stored
 			bean.setCode(-2);
 			bean.setData(data);
-			bean.setMsg("图片出错！！");
-		} else if (dbUtils.isExistInDB(username)) {
-			bean.setCode(-1);
+			bean.setMsg("A problem occurred with storing image...");
+		} else if (dbUtils.isExistInDB(col, row)) {
+            dbUtils.updateDataToDB(col, row, path);
+			bean.setCode(1);
+            data.setPantryColumn(col);
+            data.setPantryRow(row);
 			bean.setData(data);
-			bean.setMsg("该账号已存在");
-		} else if (!dbUtils.insertDataToDB(username, password, imageName)) {
+			bean.setMsg("Photo updated");
+		} else if (!dbUtils.insertDataToDB(col, row, imageName)) {
 			bean.setCode(0);
-			bean.setMsg("注册成功！！");
-			data.setUsername(username);
-			data.setPassword(password);
-			data.setToken(TokenUtils.getToken(username, password));
+			bean.setMsg("Successfully uploaded photos");
+			data.setPantryColumn(col);
+			data.setPantryRow(row);
+			data.setToken(TokenUtils.getToken(col, row));
 			bean.setData(data);
 		} else {
 			bean.setCode(500);
 			bean.setData(data);
-			bean.setMsg("数据库错误");
+			bean.setMsg("A mistake occurred in server!");
 		}
 		Gson gson = new Gson();
 		String json = gson.toJson(bean);
 		try {
-			response.getWriter().println(json);// 将json数据传给客户端 / send json back to RaspberryPi
+			response.getWriter().println(json);// send json back to pi
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			response.getWriter().close(); // 关闭这个流，不然会发生错误的 / close steam
+			response.getWriter().close(); // close steam
 		}
-		dbUtils.closeConnect(); // 关闭数据库连接 / close database connection
+		dbUtils.closeConnect(); // close database connection
 	}
 }

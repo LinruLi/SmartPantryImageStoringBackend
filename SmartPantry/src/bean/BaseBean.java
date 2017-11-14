@@ -1,5 +1,6 @@
 package bean;
 
+//Class for storing info then would be used in feedback json message
 public class BaseBean{
 	private int code;
 	private String msg;
