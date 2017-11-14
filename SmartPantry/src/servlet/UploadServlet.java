@@ -55,6 +55,7 @@ public class UploadServlet extends HttpServlet {
 		// 判空 / see if it contains null data
 		if (username == null || username.equals("") || password == null || password.equals("") || userhead == null
 				|| userhead.equals("")) {
+			System.out.println("用户名或密码为空");
 			return;
 		}
 
